@@ -5,7 +5,7 @@ import * as escodegen from 'escodegen';
 export {parseCode, resolveCode};
 
 const parseCode = (codeToParse) => {
-    return esprima.parseScript(codeToParse,{ loc: true ,range: true});
+    return esprima.parseScript(codeToParse,{ loc: true });
 };
 
 function generateResolvedElement(line, type, name='', condition='', value=''){
@@ -115,7 +115,6 @@ function resolveUpdateExpression(parsedUpdateExpression){
 
 function resolveExpression(parsedCode){
     return parsedCode ? escodegen.generate(parsedCode) : '';
-    // return parsedCode ? codeString.substring(parsedCode.range[0],parsedCode.range[1]): '';
 }
 
 function resolveForInStatement(parsedForInStatement) {
@@ -142,7 +141,8 @@ function resolveElements(parsedCode){
         UpdateExpression: resolveUpdateExpression,
         VariableDeclaration: resolveVariableDeclaration,
         WhileStatement: resolveWhileStatement,
-        ForInStatement: resolveForInStatement };
+        ForInStatement: resolveForInStatement,
+        DoWhileStatement: resolveWhileStatement };
     let resolver = typeToResolverMapping[parsedCode.type];
     return resolver ? resolver.call(undefined, parsedCode) : '';
 }
